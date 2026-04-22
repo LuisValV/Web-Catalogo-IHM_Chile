@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, sans-serif;
+}
+
+:root {
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --primary: #2563eb;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --success: #22c55e;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom utility classes for the dense layout */
+.layout-grid {
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-flex {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidebar-w { width: 220px; flex-shrink: 0; }
+.panel-w { width: 280px; flex-shrink: 0; }
+.catalog-grow { flex-grow: 1; overflow-y: auto; }

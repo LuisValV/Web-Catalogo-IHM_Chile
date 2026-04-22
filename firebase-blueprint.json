@@ -1,0 +1,56 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Producto",
+      "description": "Representa un producto en el catálogo.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Nombre del producto" },
+        "description": { "type": "string", "description": "Descripción del producto" },
+        "price": { "type": "number", "description": "Precio del producto" },
+        "stock": { "type": "number", "description": "Cantidad disponible en stock" },
+        "category": { "type": "string", "description": "Categoría del producto" },
+        "imageUrl": { "type": "string", "description": "URL de la imagen del producto" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Fecha de creación" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Fecha de última actualización" }
+      },
+      "required": ["name", "category", "price", "stock"]
+    },
+    "Category": {
+      "title": "Categoría",
+      "description": "Categoría de productos.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Nombre de la categoría" }
+      },
+      "required": ["name"]
+    },
+    "Quote": {
+      "title": "Cotización",
+      "description": "Representa una solicitud de cotización realizada por un cliente.",
+      "type": "object",
+      "properties": {
+        "productName": { "type": "string", "description": "Nombre del producto cotizado" },
+        "productId": { "type": "string", "description": "ID del producto cotizado" },
+        "clientName": { "type": "string", "description": "Nombre del cliente" },
+        "clientEmail": { "type": "string", "description": "Email del cliente" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Fecha de la cotización" }
+      },
+      "required": ["productName", "clientName", "clientEmail"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Colección de productos"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Colección de categorías"
+    },
+    "/quotes/{quoteId}": {
+      "schema": "Quote",
+      "description": "Colección de cotizaciones realizadas"
+    }
+  }
+}

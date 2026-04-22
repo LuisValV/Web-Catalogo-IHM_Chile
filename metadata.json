@@ -1,0 +1,6 @@
+{
+  "name": "IHM Catálogo & Chatbot",
+  "description": "Catálogo de productos con filtros, panel administrativo y chatbot con IA para resolver dudas de clientes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Product validation
+    function isValidProduct(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.category is string && data.category.size() > 0 && data.category.size() <= 50 &&
+             data.price is number && data.price >= 0 &&
+             data.stock is number && data.stock >= 0 &&
+             (!('description' in data) || (data.description is string && data.description.size() <= 1000)) &&
+             (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 1000000)); // Increased for base64
+    }
+
+    function isValidQuote(data) {
+      return data.productName is string && data.productName.size() > 0 &&
+             data.clientName is string && data.clientName.size() > 0 &&
+             data.clientEmail is string && data.clientEmail.size() > 0 &&
+             (!('productId' in data) || data.productId is string) &&
+             (!('createdAt' in data) || data.createdAt is timestamp);
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update: if isValidId(productId) && isValidProduct(incoming());
+      allow delete: if true;
+    }
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update: if isValidId(categoryId) && incoming().name is string;
+      allow delete: if true;
+    }
+
+    match /quotes/{quoteId} {
+      allow read: if true; // Ideally restricted, but no real Auth used yet
+      allow create: if isValidId(quoteId) && isValidQuote(incoming());
+      allow update, delete: if true;
+    }
+  }
+}
